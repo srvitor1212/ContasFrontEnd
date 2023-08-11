@@ -1,0 +1,44 @@
+﻿@inject NavigationManager nav
+
+
+<EditForm Model="@entrada">
+
+    <div>
+        <label>Nome :</label>
+        <div>
+            <InputText @bind-Value="entrada.Nome" class="form-control col-sm-3" />
+        </div>
+    </div>
+    <div>
+        <label>Valor :</label>
+        <div>
+            <InputNumber @bind-Value="entrada.Valor" class="form-control col-sm-3" />
+        </div>
+    </div>
+    <div>
+        <label>Recebo até :</label>
+        <div>
+            <InputDate @bind-Value="entrada.DataVigencia" class="form-control col-sm-3" />
+        </div>
+    </div>
+
+    <div>&nbsp;</div>
+    <div class="btn-group">
+        <button class="btn btn-success" onclick="@Enviar">Salvar</button>
+        <button class="btn btn-outline-primary" onclick="@Voltar">Voltar</button>
+    </div>
+</EditForm>
+
+@code {
+    Entrada entrada = new Entrada();
+
+    private void Enviar()
+    {
+        Console.WriteLine("xx");
+    }
+
+    private void Voltar()
+    {
+        nav.NavigateTo("/entradas");
+    }
+}

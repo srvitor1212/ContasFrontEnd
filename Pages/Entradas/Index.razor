@@ -1,0 +1,19 @@
+﻿@page "/entradas"
+@inject NavigationManager nav
+
+<h1>Entradas</h1>
+<p>Infome seus valores recebidos mensalmente como por exemplo <b>salários</b> ou <b>alugueis</b></p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Adicionar Entrada</button>
+
+<hr />
+
+<p>Minhas esntradas:</p>
+...em construção
+
+@code {
+    private void IncrementCount()
+    {
+        nav.NavigateTo("/entradas/add");
+    }
+}
