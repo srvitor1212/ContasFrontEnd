@@ -1,30 +1,32 @@
-﻿
+﻿@inject NavigationManager nav
 
-<EditForm Model="@entrada" OnSubmit="@Enviar">
 
-    <div class="form-group">
+<EditForm Model="@entrada">
+
+    <div>
         <label>Nome :</label>
         <div>
             <InputText @bind-Value="entrada.Nome" class="form-control col-sm-3" />
-            @*<ValidationMessage For="@(() => person.FirstName)" />*@
         </div>
     </div>
-    <div class="form-group">
+    <div>
         <label>Valor :</label>
         <div>
             <InputNumber @bind-Value="entrada.Valor" class="form-control col-sm-3" />
-            @*<ValidationMessage For="@(() => person.FirstName)" />*@
         </div>
     </div>
-    <div class="form-group">
+    <div>
         <label>Recebo até :</label>
         <div>
             <InputDate @bind-Value="entrada.DataVigencia" class="form-control col-sm-3" />
-            @*<ValidationMessage For="@(() => person.FirstName)" />*@
         </div>
     </div>
 
-
+    <div>&nbsp;</div>
+    <div class="btn-group">
+        <button class="btn btn-success" onclick="@Enviar">Salvar</button>
+        <button class="btn btn-outline-primary" onclick="@Voltar">Voltar</button>
+    </div>
 </EditForm>
 
 @code {
@@ -32,6 +34,11 @@
 
     private void Enviar()
     {
-        
+        Console.WriteLine("xx");
+    }
+
+    private void Voltar()
+    {
+        nav.NavigateTo("/entradas");
     }
 }
