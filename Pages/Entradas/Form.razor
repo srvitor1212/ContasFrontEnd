@@ -32,14 +32,13 @@
 @code {
     Entrada entrada = new Entrada();
 
-    public Form()
+    protected override void OnInitialized()
     {
         InicializarCampos();
     }
 
     private void InicializarCampos()
     {
-        // Inicializa a data com último dia do mês
         DateTime agora = DateTime.UtcNow;
         DateTime dataUltimoDiaMes = new DateTime(
             year: agora.Year,
