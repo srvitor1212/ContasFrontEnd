@@ -18,7 +18,7 @@
     <div>
         <label>Recebo até :</label>
         <div>
-            <InputDate @bind-Value="entrada.DataVigencia" class="form-control col-sm-3" />
+            <CalendarioMesAno DataInicial="entrada.DataVigencia" />
         </div>
     </div>
 
@@ -31,6 +31,22 @@
 
 @code {
     Entrada entrada = new Entrada();
+
+    protected override void OnInitialized()
+    {
+        InicializarCampos();
+    }
+
+    private void InicializarCampos()
+    {
+        DateTime agora = DateTime.UtcNow;
+        DateTime dataUltimoDiaMes = new DateTime(
+            year: agora.Year,
+            month: agora.Month,
+            day: DateTime.DaysInMonth(agora.Year, agora.Month)
+        );
+        entrada.DataVigencia = dataUltimoDiaMes;
+    }
 
     private void Enviar()
     {
