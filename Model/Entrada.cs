@@ -9,7 +9,7 @@ namespace ContasFrontEnd.Model
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "Informe o valor recebido mensalmente")]
-        public double Valor { get; set; }
+        public double? Valor { get; set; }
         public DateTime DataVigencia { get; set; }
     }
 }

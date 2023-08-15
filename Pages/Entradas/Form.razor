@@ -12,7 +12,7 @@
     <div>
         <label>Valor :</label>
         <div>
-            <InputNumber @bind-Value="entrada.Valor" class="form-control col-sm-3" />
+            <InputNumber placeholder="1320,40" @bind-Value="entrada.Valor" class="form-control col-sm-3" />
         </div>
     </div>
     <div>
@@ -46,6 +46,7 @@
             day: DateTime.DaysInMonth(agora.Year, agora.Month)
         );
         entrada.DataVigencia = dataUltimoDiaMes;
+        entrada.Valor = null;
     }
 
     private void Enviar()
