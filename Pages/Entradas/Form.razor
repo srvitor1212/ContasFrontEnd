@@ -2,11 +2,13 @@
 
 
 <EditForm Model="@entrada">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
 
     <div>
         <label>Nome :</label>
         <div>
             <InputText @bind-Value="entrada.Nome" class="form-control col-sm-3" />
+            <ValidationMessage For="() => entrada.Nome"></ValidationMessage>
         </div>
     </div>
     <div>
@@ -23,6 +25,7 @@
     </div>
 
     <div>&nbsp;</div>
+    <ValidationSummary></ValidationSummary>
     <div class="btn-group">
         <button class="btn btn-success" onclick="@Enviar">Salvar</button>
         <button class="btn btn-outline-primary" onclick="@Voltar">Voltar</button>
