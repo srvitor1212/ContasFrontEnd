@@ -75,18 +75,20 @@
         {
             client.BaseAddress = new System.Uri("https://localhost:7229/");
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
             HttpResponseMessage response = await client.GetAsync("api/Entradas");
-            Console.WriteLine(response);
+            if (response.IsSuccessStatusCode)
+            {  //GET
+                
+                Console.WriteLine(response.Content);
+
+                //Entrada entrada = await response.Content.ReadAsAsync<Entrada>();
+                //Console.WriteLine("{0}\tR${1}\t{2}", produto.Nome, produto.Preco, produto.Categoria);
+                //Console.WriteLine("Produto acessado e exibido.  Tecle algo para incluir um novo produto.");
+                //Console.ReadKey();
+            }
 
 
-            //if (response.IsSuccessStatusCode)
-            //{  //GET
-            //    Produto produto = await response.Content.ReadAsAsync<Produto>();
-            //    Console.WriteLine("{0}\tR${1}\t{2}", produto.Nome, produto.Preco, produto.Categoria);
-            //    Console.WriteLine("Produto acessado e exibido.  Tecle algo para incluir um novo produto.");
-            //    Console.ReadKey();
-            //}
             ////POST
             //var cha = new Produto() { Nome = "Chá Verde", Preco = 1.50M, Categoria = "Bebidas" };
             //response = await client.PostAsJsonAsync("api/produtos", cha);
