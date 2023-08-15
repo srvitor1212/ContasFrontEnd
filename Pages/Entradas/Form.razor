@@ -79,13 +79,20 @@
             HttpResponseMessage response = await client.GetAsync("api/Entradas");
             if (response.IsSuccessStatusCode)
             {  //GET
-                
-                Console.WriteLine(response.Content);
 
-                //Entrada entrada = await response.Content.ReadAsAsync<Entrada>();
-                //Console.WriteLine("{0}\tR${1}\t{2}", produto.Nome, produto.Preco, produto.Categoria);
-                //Console.WriteLine("Produto acessado e exibido.  Tecle algo para incluir um novo produto.");
-                //Console.ReadKey();
+                var teste = response.Content.ReadAsStringAsync();
+                string texto = teste.Result;
+
+                List<Entrada> entradasList = JsonSerializer.Deserialize<List<Entrada>>(texto);
+
+
+
+                string debug = "";
+
+                // Entrada entrada = await response.Content.ReadAsAsync<Entrada>();
+                // Console.WriteLine("{0}\tR${1}\t{2}", produto.Nome, produto.Preco, produto.Categoria);
+                // Console.WriteLine("Produto acessado e exibido.  Tecle algo para incluir um novo produto.");
+                // Console.ReadKey();
             }
 
 

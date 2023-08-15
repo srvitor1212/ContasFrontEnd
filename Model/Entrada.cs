@@ -4,6 +4,8 @@ namespace ContasFrontEnd.Model
 {
     public class Entrada
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Informe um nome como: Salário, Aluguel, Venda do Carro...")]
         [MinLength(3, ErrorMessage = "Precisa ter no mínimo 3 caracteres. Exemplo: Salário, Aluguel, Venda do Carro...")]
         public string? Nome { get; set; }
