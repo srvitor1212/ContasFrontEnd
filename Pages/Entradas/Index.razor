@@ -18,7 +18,25 @@
     <p>Carregando...</p>
 } else
 {
-    <p>OK!</p>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Valor</th>
+                <th>Recebo até</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ent in entradas)
+            {
+                <tr>
+                    <td>@ent.Nome</td>
+                    <td>@ent.Valor</td>
+                    <td>@ent.DataVigencia</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 

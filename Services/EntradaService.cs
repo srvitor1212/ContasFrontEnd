@@ -6,10 +6,11 @@ namespace ContasFrontEnd.Services
 {
     public class EntradaService : IEntradaService
     {
-        public async Task<List<Entrada>> GetAll()
+        public async Task<List<Entrada>> GetAll() //todo: fazer melhor :)
         {
             List<Entrada> entradas = new List<Entrada>();
-            string baseURL = "https://localhost:5001/";
+            //string baseURL = "https://localhost:5001/";
+            string baseURL = "https://contaswebapi.azurewebsites.net/";
             using (var api = new HttpClient())
             {
                 api.BaseAddress = new System.Uri(baseURL);
