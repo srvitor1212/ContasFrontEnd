@@ -71,47 +71,39 @@
     {
         //await http.PostAsJsonAsync("https://localhost:7229/api/Entradas", entrada);
 
-        using (var client = new HttpClient())
-        {
-            client.BaseAddress = new System.Uri("https://localhost:5001/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
-            HttpResponseMessage response = await client.GetAsync("api/Entradas");
-            if (response.IsSuccessStatusCode)
-            {  //GET
+        // using (var client = new HttpClient())
+        // {
+        //     client.BaseAddress = new System.Uri("https://localhost:5001/");
+        //     client.DefaultRequestHeaders.Accept.Clear();
+        //     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
+        //     HttpResponseMessage response = await client.GetAsync("api/Entradas");
+        //     if (response.IsSuccessStatusCode)
+        //     {  //GET
 
-                var teste = response.Content.ReadAsStringAsync();
-                string texto = teste.Result;
+        //         var teste = response.Content.ReadAsStringAsync();
+        //         string texto = teste.Result;
 
-                var eventoMpd = JsonConvert.DeserializeObject<List<Entrada>>(texto);
-
-
-
-
-                // Entrada entrada = await response.Content.ReadAsAsync<Entrada>();
-                // Console.WriteLine("{0}\tR${1}\t{2}", produto.Nome, produto.Preco, produto.Categoria);
-                // Console.WriteLine("Produto acessado e exibido.  Tecle algo para incluir um novo produto.");
-                // Console.ReadKey();
-            }
+        //         var eventoMpd = JsonConvert.DeserializeObject<List<Entrada>>(texto);
+        //     }
 
 
-            ////POST
-            //var cha = new Produto() { Nome = "Chá Verde", Preco = 1.50M, Categoria = "Bebidas" };
-            //response = await client.PostAsJsonAsync("api/produtos", cha);
-            //Console.WriteLine("Produto cha verde incluído. Tecle algo para atualizar o preço do produto.");
-            //Console.ReadKey();
-            //if (response.IsSuccessStatusCode)
-            //{   //PUT
-            //    Uri chaUrl = response.Headers.Location;
-            //    cha.Preco = 2.55M;   // atualiza o preco do produto
-            //    response = await client.PutAsJsonAsync(chaUrl, cha);
-            //    Console.WriteLine("Produto preço do atualizado. Tecle algo para excluir o produto");
-            //    Console.ReadKey();
-            //    //DELETE
-            //    response = await client.DeleteAsync(chaUrl);
-            //    Console.WriteLine("Produto deletado");
-            //    Console.ReadKey();
-            //}
-        }
+        //     ////POST
+        //     //var cha = new Produto() { Nome = "Chá Verde", Preco = 1.50M, Categoria = "Bebidas" };
+        //     //response = await client.PostAsJsonAsync("api/produtos", cha);
+        //     //Console.WriteLine("Produto cha verde incluído. Tecle algo para atualizar o preço do produto.");
+        //     //Console.ReadKey();
+        //     //if (response.IsSuccessStatusCode)
+        //     //{   //PUT
+        //     //    Uri chaUrl = response.Headers.Location;
+        //     //    cha.Preco = 2.55M;   // atualiza o preco do produto
+        //     //    response = await client.PutAsJsonAsync(chaUrl, cha);
+        //     //    Console.WriteLine("Produto preço do atualizado. Tecle algo para excluir o produto");
+        //     //    Console.ReadKey();
+        //     //    //DELETE
+        //     //    response = await client.DeleteAsync(chaUrl);
+        //     //    Console.WriteLine("Produto deletado");
+        //     //    Console.ReadKey();
+        //     //}
+        // }
     }
 }
