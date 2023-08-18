@@ -11,8 +11,14 @@
 <hr />
 
 <p>Minhas Entradas:</p>
-...em construção
 
+@if (entradas.Count == 0)
+{
+    <p>Carregando...</p>
+} else
+{
+    <p>OK!</p>
+}
 
 
 @code {
@@ -20,10 +26,10 @@
 
     protected override void OnInitialized()
     {
-        ConsultarEntradasAPI();
+        base.OnInitialized();
     }
 
-    private async void ConsultarEntradasAPI()
+    protected override async Task OnParametersSetAsync()
     {
         string baseURL = "https://localhost:5001/";
         using (var api = new HttpClient())
