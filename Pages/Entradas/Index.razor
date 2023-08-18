@@ -1,20 +1,54 @@
 ﻿@page "/entradas"
 @inject NavigationManager nav
+@inject Services.IEntradaService _entradaService
 
 <PageTitle>Entradas</PageTitle>
 
 <h1>Entradas</h1>
 <p>Infome seus valores recebidos mensalmente como por exemplo <b>salários</b> ou <b>alugueis</b></p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Adicionar Entrada</button>
+<button class="btn btn-primary" @onclick="@AddEntrada">Adicionar Entrada</button>
 
 <hr />
 
 <p>Minhas Entradas:</p>
-...em construção
+
+@if (entradas.Count == 0)
+{
+    <p>Carregando...</p>
+} else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Valor</th>
+                <th>Recebo até</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ent in entradas)
+            {
+                <tr>
+                    <td>@ent.Nome</td>
+                    <td>@ent.Valor</td>
+                    <td>@ent.DataVigencia</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 
 @code {
-    private void IncrementCount()
+    List<Entrada> entradas = new List<Entrada>();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        entradas = await _entradaService.GetAll();
+    }
+
+    private void AddEntrada()
     {
         nav.NavigateTo("/entradas/add");
     }
