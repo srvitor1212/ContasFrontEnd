@@ -15,7 +15,14 @@
 
 @if (entradas.Count == 0)
 {
-    <p>Carregando...</p>
+    if (!retornouApi)
+    {
+        <p>Carregando...</p>
+    } else
+    {
+        <p>Não foi possível carregar as informações!</p>
+    }
+
 } else
 {
     <table class="table table-striped">
@@ -42,10 +49,12 @@
 
 @code {
     List<Entrada> entradas = new List<Entrada>();
+    bool retornouApi = false;
 
     protected override async Task OnParametersSetAsync()
     {
         entradas = await _entradaService.GetAll();
+        retornouApi = true;
     }
 
     private void AddEntrada()
