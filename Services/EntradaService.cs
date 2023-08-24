@@ -1,11 +1,13 @@
 ﻿using ContasFrontEnd.Model;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace ContasFrontEnd.Services
 {
     public class EntradaService : BaseService, IEntradaService
     {
+        private readonly string _urlPath = "api/Entradas";
         public async Task<List<Entrada>> GetAll() //todo: fazer melhor :)
         {
             List<Entrada> entradas = new List<Entrada>();
@@ -19,7 +21,7 @@ namespace ContasFrontEnd.Services
 
                 try
                 {
-                    HttpResponseMessage response = await api.GetAsync("api/Entradas");
+                    HttpResponseMessage response = await api.GetAsync(_urlPath);
                     string responseText = response.Content.ReadAsStringAsync().Result;
                     var conversao = JsonConvert.DeserializeObject<List<Entrada>>(responseText);
                     if (conversao != null)
@@ -32,6 +34,25 @@ namespace ContasFrontEnd.Services
             }
 
             return entradas;
+        }
+
+        public async Task<Entrada> Create(Entrada entrada) //todo não ta funcionando
+        {
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new System.Uri(BaseURL);
+                api.DefaultRequestHeaders.Accept.Clear();
+
+                try
+                {
+                    HttpResponseMessage response = await api.PostAsJsonAsync(_urlPath, entrada);
+                    string responseText = response.Content.ReadAsStringAsync().Result;
+
+                } catch (Exception e) {
+                    Console.WriteLine($"ERROR api: {e}");
+                }
+            }
+            return entrada;
         }
     }
 }
