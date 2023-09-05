@@ -1,5 +1,5 @@
 ﻿@inject NavigationManager nav
-@inject HttpClient http
+@inject Services.IEntradaService _entradaService
 
 
 <EditForm Model="@entrada">
@@ -58,7 +58,9 @@
     {
         if (entrada.Valor == null)
             entrada.Valor = 0;
-        //PostEntrada();
+
+        if (entrada.Nome != null)
+            PostEntrada();
     }
 
     private void Voltar()
@@ -69,6 +71,8 @@
     // ==================
     async Task PostEntrada()
     {
+
+        await _entradaService.Create(entrada);
         //await http.PostAsJsonAsync("https://localhost:7229/api/Entradas", entrada);
 
         // using (var client = new HttpClient())
