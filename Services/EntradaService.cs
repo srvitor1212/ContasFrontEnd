@@ -42,8 +42,6 @@ namespace ContasFrontEnd.Services
             {
                 api.BaseAddress = new Uri(BaseURL);
                 api.DefaultRequestHeaders.Accept.Clear();
-
-
                 try
                 {
                     HttpResponseMessage response = await api.PostAsJsonAsync(_urlPath, entrada);
