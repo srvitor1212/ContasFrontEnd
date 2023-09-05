@@ -14,7 +14,7 @@ namespace ContasFrontEnd.Services
 
             using (var api = new HttpClient())
             {
-                api.BaseAddress = new System.Uri(BaseURL);
+                api.BaseAddress = new Uri(BaseURL);
                 api.DefaultRequestHeaders.Accept.Clear();
                 api.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("text/plain"));
@@ -40,8 +40,9 @@ namespace ContasFrontEnd.Services
         {
             using (var api = new HttpClient())
             {
-                api.BaseAddress = new System.Uri(BaseURL);
+                api.BaseAddress = new Uri(BaseURL);
                 api.DefaultRequestHeaders.Accept.Clear();
+
 
                 try
                 {
