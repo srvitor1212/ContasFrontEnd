@@ -8,27 +8,39 @@
     <div>
         <label>Nome :</label>
         <div>
-            <InputText @bind-Value="entrada.Nome" class="form-control col-sm-3" />
+            <InputText @bind-Value="entrada.Nome" class="form-control" />
             <ValidationMessage For="() => entrada.Nome"></ValidationMessage>
         </div>
     </div>
     <div>
         <label>Valor :</label>
         <div>
-            <InputNumber placeholder="1320,40" @bind-Value="entrada.Valor" class="form-control col-sm-3" />
+            <!--//todo o campo ta permitindo assim: "valor": 200.13123213213214, -->
+            <InputNumber placeholder="1320,40" @bind-Value="entrada.Valor" class="form-control" /> 
         </div>
     </div>
     <div>
         <label>Recebo até :</label>
         <div>
-            <CalendarioMesAno DataInicial="entrada.DataVigencia" />
+            <!-- //todo usar esse calendário que é mais top -->
+            @* <CalendarioMesAno DataInicial="entrada.DataVigencia" /> *@
+            
+            <InputDate class="form-control" @bind-Value="entrada.DataVigencia"></InputDate>
         </div>
     </div>
 
     <div>&nbsp;</div>
     <ValidationSummary></ValidationSummary>
     <div class="btn-group">
-        <button class="btn btn-success" onclick="@Enviar">Salvar</button>
+        @* <button class="btn btn-success" onclick="@Enviar" disabled="@loading">Salvar</button> *@
+        <button disabled="@loading" class="btn btn-success" onclick="@Enviar">
+            @if (loading)
+            {
+                <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            Salvar
+        </button>
+
         <button class="btn btn-outline-primary" onclick="@Voltar">Voltar</button>
     </div>
 </EditForm>
@@ -36,6 +48,7 @@
 
 @code {
     Entrada entrada = new Entrada();
+    public bool loading { get; set; } = false;
 
     protected override void OnInitialized()
     {
@@ -56,11 +69,14 @@
 
     private void Enviar()
     {
+        loading = true;
         if (entrada.Valor == null)
             entrada.Valor = 0;
 
         if (entrada.Nome != null)
             PostEntrada();
+
+        loading = false;
     }
 
     private void Voltar()
@@ -68,11 +84,14 @@
         nav.NavigateTo("/entradas");
     }
 
-    // ==================
     async Task PostEntrada()
     {
 
-        await _entradaService.Create(entrada);
+        HttpResponseMessage response = await _entradaService.Create(entrada);
+        if (response.IsSuccessStatusCode)
+            Console.WriteLine("Sucesso");
+
+        var a = 1;
         //await http.PostAsJsonAsync("https://localhost:7229/api/Entradas", entrada);
 
         // using (var client = new HttpClient())
