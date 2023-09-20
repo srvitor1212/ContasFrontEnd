@@ -1,9 +1,29 @@
 ﻿@page "/entradas/add"
 
-<h1>Adicionar Entrada</h1>
+@inject Services.IEntradaService _entradaService
 
-<Form></Form>
+<h3>Add</h3>
+<br/>
+
+<Form   ButtonText="Salvar"
+        entrada="@entrada"
+        loading="@loading"
+        OnValidSubmit="@CriarEntrada"></Form>
 
 @code {
+    bool loading = false;
 
+    Entrada entrada = new Entrada();
+
+    async Task CriarEntrada()
+    {
+        loading = true;
+        try
+        {
+            await _entradaService.Create(entrada);
+        } catch (Exception e)
+        {
+            Console.WriteLine($"ERRO: {e}");
+        }
+    }
 }
