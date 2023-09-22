@@ -1,6 +1,7 @@
 ﻿@page "/entradas/add"
 @inject NavigationManager nav
 @inject Services.IEntradaService _entradaService
+@inject IAlertService AlertService
 
 
 <Form   ButtonText="Salvar"
@@ -30,10 +31,19 @@
         try
         {
             HttpResponseMessage response = await _entradaService.Create(entrada);
-            if (response.IsSuccessStatusCode)
-                nav.NavigateTo("/entradas");
+            var x = ((int)response.StatusCode);
+            if ( ((int)response.StatusCode) == 201)
+            {
+                AlertService.Success("Registro gravado com sucesso", keepAfterRouteChange: true);
+            } else
+            {
+                AlertService.Warn("Não foi possível gravar o registro, tenta novamente mais tarde", keepAfterRouteChange: true);
+            }
+            nav.NavigateTo("/entradas");
+
         } catch (Exception e)
         {
+            AlertService.Error("Erro inesperado, verifique o log", keepAfterRouteChange: true);
             Console.WriteLine($"ERRO: {e}");
         }
     }
