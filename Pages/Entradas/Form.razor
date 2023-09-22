@@ -1,4 +1,4 @@
-﻿
+﻿@inject NavigationManager nav
 
 <EditForm   Model="@entrada"
             OnValidSubmit="@OnValidSubmit">
@@ -7,7 +7,8 @@
     <div>
         <label>Nome :</label>
         <div>
-            <InputText @bind-Value="@entrada.Nome" class="form-control" />
+            <InputText @bind-Value="@entrada.Nome" class="form-control"
+                       placeholder="Salário, Aluguel, A receber..." />
             <ValidationMessage For="@(() => entrada.Nome)"></ValidationMessage>
         </div>
     </div>
@@ -41,6 +42,8 @@
             }
             &nbsp;@ButtonText
         </button>
+
+        <button class="btn btn-primary" onclick="@Voltar">Voltar</button>
     </div>
 
 </EditForm>
@@ -54,5 +57,10 @@
     public bool loading { get; set; }
     [Parameter]
     public EventCallback OnValidSubmit { get; set; }
+
+    private void Voltar()
+    {
+        nav.NavigateTo("/entradas");
+    }
 
 }

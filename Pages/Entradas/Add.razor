@@ -1,9 +1,7 @@
 ﻿@page "/entradas/add"
-
+@inject NavigationManager nav
 @inject Services.IEntradaService _entradaService
 
-<h3>Add</h3>
-<br/>
 
 <Form   ButtonText="Salvar"
         entrada="@entrada"
@@ -15,12 +13,25 @@
 
     Entrada entrada = new Entrada();
 
+    protected override void OnInitialized()
+    {
+        DateTime agora = DateTime.UtcNow;
+        DateTime dataUltimoDiaMes = new DateTime(
+            year: agora.Year,
+            month: agora.Month,
+            day: DateTime.DaysInMonth(agora.Year, agora.Month)
+        );
+        entrada.DataVigencia = dataUltimoDiaMes;
+    }
+
     async Task CriarEntrada()
     {
         loading = true;
         try
         {
-            await _entradaService.Create(entrada);
+            HttpResponseMessage response = await _entradaService.Create(entrada);
+            if (response.IsSuccessStatusCode)
+                nav.NavigateTo("/entradas");
         } catch (Exception e)
         {
             Console.WriteLine($"ERRO: {e}");
