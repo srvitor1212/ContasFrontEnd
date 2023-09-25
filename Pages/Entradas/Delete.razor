@@ -1,0 +1,16 @@
+﻿@page "/entradas/delete/{id}"
+@inject Services.IEntradaService _entradaService
+
+<h3>Delete</h3>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    Entrada entrada = new Entrada();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        entrada = await //todo_entradaService. UserService.GetUser(int.Parse(Id));
+    }
+}
