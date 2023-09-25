@@ -1,9 +1,50 @@
 ﻿@page "/entradas/add"
+@inject NavigationManager nav
+@inject Services.IEntradaService _entradaService
+@inject IAlertService AlertService
 
-<h1>Adicionar Entrada</h1>
 
-<Form></Form>
+<Form   ButtonText="Salvar"
+        entrada="@entrada"
+        loading="@loading"
+        OnValidSubmit="@CriarEntrada"></Form>
 
 @code {
+    bool loading = false;
 
+    Entrada entrada = new Entrada();
+
+    protected override void OnInitialized()
+    {
+        DateTime agora = DateTime.UtcNow;
+        DateTime dataUltimoDiaMes = new DateTime(
+            year: agora.Year,
+            month: agora.Month,
+            day: DateTime.DaysInMonth(agora.Year, agora.Month)
+        );
+        entrada.DataVigencia = dataUltimoDiaMes;
+    }
+
+    async Task CriarEntrada()
+    {
+        loading = true;
+        try
+        {
+            HttpResponseMessage response = await _entradaService.Create(entrada);
+            var x = ((int)response.StatusCode);
+            if ( ((int)response.StatusCode) == 201)
+            {
+                AlertService.Success("Registro gravado com sucesso", keepAfterRouteChange: true);
+            } else
+            {
+                AlertService.Warn("Não foi possível gravar o registro, tente novamente mais tarde", keepAfterRouteChange: true);
+            }
+            nav.NavigateTo("/entradas");
+
+        } catch (Exception e)
+        {
+            AlertService.Error("Erro inesperado, verifique o log", keepAfterRouteChange: true);
+            Console.WriteLine($"ERRO: {e}");
+        }
+    }
 }

@@ -1,0 +1,132 @@
+﻿@inject NavigationManager nav
+@inject Services.IEntradaService _entradaService
+
+
+<EditForm Model="@entrada">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+    <div>
+        <label>Nome :</label>
+        <div>
+            <InputText @bind-Value="entrada.Nome" class="form-control" />
+            <ValidationMessage For="() => entrada.Nome"></ValidationMessage>
+        </div>
+    </div>
+    <div>
+        <label>Valor :</label>
+        <div>
+            <!--//todo o campo ta permitindo assim: "valor": 200.13123213213214, -->
+            <InputNumber placeholder="1320,40" @bind-Value="entrada.Valor" class="form-control" /> 
+        </div>
+    </div>
+    <div>
+        <label>Recebo até :</label>
+        <div>
+            <!-- //todo usar esse calendário que é mais top -->
+            @* <CalendarioMesAno DataInicial="entrada.DataVigencia" /> *@
+            
+            <InputDate class="form-control" @bind-Value="entrada.DataVigencia"></InputDate>
+        </div>
+    </div>
+
+    <div>&nbsp;</div>
+    <ValidationSummary></ValidationSummary>
+    <div class="btn-group">
+        @* <button class="btn btn-success" onclick="@Enviar" disabled="@loading">Salvar</button> *@
+        <button disabled="@loading" class="btn btn-success" onclick="@Enviar">
+            @if (loading)
+            {
+                <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            Salvar
+        </button>
+
+        <button class="btn btn-outline-primary" onclick="@Voltar">Voltar</button>
+    </div>
+</EditForm>
+
+
+@code {
+    Entrada entrada = new Entrada();
+    public bool loading { get; set; } = false;
+
+    protected override void OnInitialized()
+    {
+        InicializarCampos();
+    }
+
+    private void InicializarCampos()
+    {
+        DateTime agora = DateTime.UtcNow;
+        DateTime dataUltimoDiaMes = new DateTime(
+            year: agora.Year,
+            month: agora.Month,
+            day: DateTime.DaysInMonth(agora.Year, agora.Month)
+        );
+        entrada.DataVigencia = dataUltimoDiaMes;
+        entrada.Valor = null;
+    }
+
+    private void Enviar()
+    {
+        loading = true;
+        if (entrada.Valor == null)
+            entrada.Valor = 0;
+
+        if (entrada.Nome != null)
+            PostEntrada();
+
+        loading = false;
+    }
+
+    private void Voltar()
+    {
+        nav.NavigateTo("/entradas");
+    }
+
+    async Task PostEntrada()
+    {
+
+        HttpResponseMessage response = await _entradaService.Create(entrada);
+        if (response.IsSuccessStatusCode)
+            Console.WriteLine("Sucesso");
+
+        var a = 1;
+        //await http.PostAsJsonAsync("https://localhost:7229/api/Entradas", entrada);
+
+        // using (var client = new HttpClient())
+        // {
+        //     client.BaseAddress = new System.Uri("https://localhost:5001/");
+        //     client.DefaultRequestHeaders.Accept.Clear();
+        //     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
+        //     HttpResponseMessage response = await client.GetAsync("api/Entradas");
+        //     if (response.IsSuccessStatusCode)
+        //     {  //GET
+
+        //         var teste = response.Content.ReadAsStringAsync();
+        //         string texto = teste.Result;
+
+        //         var eventoMpd = JsonConvert.DeserializeObject<List<Entrada>>(texto);
+        //     }
+
+
+        //     ////POST
+        //     //var cha = new Produto() { Nome = "Chá Verde", Preco = 1.50M, Categoria = "Bebidas" };
+        //     //response = await client.PostAsJsonAsync("api/produtos", cha);
+        //     //Console.WriteLine("Produto cha verde incluído. Tecle algo para atualizar o preço do produto.");
+        //     //Console.ReadKey();
+        //     //if (response.IsSuccessStatusCode)
+        //     //{   //PUT
+        //     //    Uri chaUrl = response.Headers.Location;
+        //     //    cha.Preco = 2.55M;   // atualiza o preco do produto
+        //     //    response = await client.PutAsJsonAsync(chaUrl, cha);
+        //     //    Console.WriteLine("Produto preço do atualizado. Tecle algo para excluir o produto");
+        //     //    Console.ReadKey();
+        //     //    //DELETE
+        //     //    response = await client.DeleteAsync(chaUrl);
+        //     //    Console.WriteLine("Produto deletado");
+        //     //    Console.ReadKey();
+        //     //}
+        // }
+    }
+}
