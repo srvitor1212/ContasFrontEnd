@@ -8,7 +8,7 @@ namespace ContasFrontEnd.Services
     public class EntradaService : BaseService, IEntradaService
     {
         private readonly string _urlPath = "api/Entradas";
-        public async Task<List<Entrada>> GetAll() //todo: fazer melhor :)
+        public async Task<List<Entrada>> GetAll()
         {
             List<Entrada> entradas = new List<Entrada>();
 
@@ -36,22 +36,23 @@ namespace ContasFrontEnd.Services
             return entradas;
         }
 
-        public async Task<Entrada> Create(Entrada entrada) //todo não ta funcionando
+        public async Task<HttpResponseMessage> Create(Entrada entrada)
         {
+            HttpResponseMessage response = new HttpResponseMessage();
             using (var api = new HttpClient())
             {
                 api.BaseAddress = new Uri(BaseURL);
-                api.DefaultRequestHeaders.Accept.Clear();
+                api.DefaultRequestHeaders.Accept.Clear();                
                 try
                 {
-                    HttpResponseMessage response = await api.PostAsJsonAsync(_urlPath, entrada);
+                    response = await api.PostAsJsonAsync(_urlPath, entrada);
                     string responseText = response.Content.ReadAsStringAsync().Result;
 
                 } catch (Exception e) {
                     Console.WriteLine($"ERROR api: {e}");
                 }
             }
-            return entrada;
+            return response;
         }
     }
 }
