@@ -1,16 +1,55 @@
 ﻿@page "/entradas/delete/{id}"
 @inject Services.IEntradaService _entradaService
+@inject NavigationManager nav
 
-<h3>Delete</h3>
+<h2>Remover</h2>
+
+<h3>Tem certeza que deseja remover ?</h3>
+
+<table class="table col-md-6">
+    <tbody>
+        <tr>
+            <th scope="row">Nome</th>
+            <td>@entrada.Nome</td>
+        </tr>
+        <tr>
+            <th scope="row">Valor</th>
+            <td>@entrada.Valor</td>
+        </tr>
+        <tr>
+            <th scope="row">Data até</th>
+            <td>@entrada.DataVigencia</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="btn-group">
+    <button disabled="@loading" class="btn btn-danger">
+        @if (loading)
+        {
+            <span class="spinner-border spinner-border-sm mr-1"></span>
+        }
+        &nbsp;Remover
+    </button>
+
+    <button class="btn btn-primary" onclick="@Voltar">Voltar</button>
+</div>
 
 @code {
     [Parameter]
     public string Id { get; set; }
+    [Parameter]
+    public bool loading { get; set; }
 
     Entrada entrada = new Entrada();
 
     protected async override Task OnParametersSetAsync()
     {
-        entrada = await //todo_entradaService. UserService.GetUser(int.Parse(Id));
+        entrada = await _entradaService.GetById( Convert.ToInt32(Id) );
+    }
+
+    private void Voltar()
+    {
+        nav.NavigateTo("/entradas");
     }
 }
