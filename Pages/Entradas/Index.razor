@@ -31,6 +31,7 @@
                 <th>Nome</th>
                 <th>Valor</th>
                 <th>Recebo até</th>
+                <th>#</th>
             </tr>
         </thead>
         <tbody>
@@ -40,6 +41,10 @@
                     <td>@ent.Nome</td>
                     <td>@ent.Valor</td>
                     <td>@ent.DataVigencia</td>
+                    <td style="white-space: nowrap">
+                        <NavLink href="@($"/entradas/delete/{ent.Id}")" class="btn btn-link oi oi-trash text-danger mr-1 nounderline"></NavLink>
+                    </td>                   
+
                 </tr>
             }
         </tbody>
