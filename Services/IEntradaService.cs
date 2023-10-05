@@ -7,5 +7,6 @@ namespace ContasFrontEnd.Services
         Task<List<Entrada>> GetAll();
         Task<HttpResponseMessage> Create(Entrada entrada);
         Task<Entrada> GetById(int id);
+        Task<HttpResponseMessage> Delete(int id);
     }
 }

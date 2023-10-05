@@ -1,6 +1,7 @@
 ﻿@page "/entradas/delete/{id}"
 @inject Services.IEntradaService _entradaService
 @inject NavigationManager nav
+@inject IAlertService AlertService
 
 <h2>Remover</h2>
 
@@ -24,7 +25,7 @@
 </table>
 
 <div class="btn-group">
-    <button disabled="@loading" class="btn btn-danger">
+    <button onclick="@Remover" disabled="@loading" class="btn btn-danger">
         @if (loading)
         {
             <span class="spinner-border spinner-border-sm mr-1"></span>
@@ -51,5 +52,29 @@
     private void Voltar()
     {
         nav.NavigateTo("/entradas");
+    }
+
+    async Task Remover()
+    {
+        loading = true;
+        try
+        {
+            HttpResponseMessage response = await _entradaService.Delete(entrada.Id);
+            if (((int)response.StatusCode) == 200)
+            {
+                AlertService.Success("Registro excluído com sucesso", keepAfterRouteChange: true);
+            }
+            else
+            {
+                AlertService.Warn("Não foi possível excluir o registro, tente novamente mais tarde", keepAfterRouteChange: true);
+            }
+            nav.NavigateTo("/entradas");
+
+        }
+        catch (Exception e)
+        {
+            AlertService.Error("Erro inesperado, verifique o log", keepAfterRouteChange: true);
+            Console.WriteLine($"ERRO: {e}");
+        }
     }
 }

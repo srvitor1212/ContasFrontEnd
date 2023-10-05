@@ -82,5 +82,28 @@ namespace ContasFrontEnd.Services
 
             return entrada;
         }
+
+        public async Task<HttpResponseMessage> Delete(int id)
+        {
+            HttpResponseMessage response = new HttpResponseMessage();
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri(BaseURL);
+                api.DefaultRequestHeaders.Accept.Clear();
+                api.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("text/plain"));
+
+                try
+                {
+                    response = await api.DeleteAsync(_urlPath + "?id=" + id);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"ERROR api: {e}");
+                }
+            }
+
+            return response;
+        }
     }
 }
