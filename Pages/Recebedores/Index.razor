@@ -1,16 +1,44 @@
 ﻿@page "/recebedores"
+@inject NavigationManager nav
 
 <PageTitle>Recebedores</PageTitle>
 
 <h1>Recebedores</h1>
-<p>Informe para quem você faz seus pagamentos, exemplo: Boleto Viacredi, Cartão de Crédito, Mãe, João da Empresa etc.</p>
+<p>Informe <b>para quem</b> você faz seus <b>pagamentos</b>, exemplo: Boleto Viacredi, Cartão de Crédito, Mãe, João da Empresa etc.</p>
 
-<p>Em construção</p>
+<button class="btn btn-primary">Adicionar</button>
 
 <hr />
 
-<p>...</p>
+<p>Meus Recebedores:</p>
+
+@if (recebedores.Count == 0)
+{
+    if (!retornouApi)
+    {
+        <p>Carregando...</p>
+    }
+    else
+    {
+        <p>Não foi possível carregar as informações!</p>
+    }
+} else
+{
+    <p>EM CONTRUÇÃO...</p>
+}
 
 @code {
+    List<Recebedor> recebedores = new List<Recebedor>();
+    bool retornouApi = false;
 
+    protected override async Task OnParametersSetAsync()
+    {
+        //entradas = await _entradaService.GetAll();
+        retornouApi = true;
+    }
+
+    private void AddEntrada()
+    {
+        nav.NavigateTo("/recebedores/add");
+    }
 }
