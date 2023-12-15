@@ -1,5 +1,6 @@
 ﻿@page "/recebedores"
 @inject NavigationManager nav
+@inject Services.IRecebedorService _recebedorService
 
 <PageTitle>Recebedores</PageTitle>
 
@@ -24,7 +25,26 @@
     }
 } else
 {
-    <p>EM CONTRUÇÃO...</p>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome do Recebedor</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in recebedores)
+            {
+                <tr>
+                    <td>@obj.Nome</td>
+                    <td style="white-space: nowrap">
+                        <NavLink href="@($"/recebedores/delete/{obj.Id}")" class="btn btn-link oi oi-trash text-danger mr-1 nounderline"></NavLink>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 @code {
@@ -33,7 +53,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        //entradas = await _entradaService.GetAll();
+        recebedores = await _recebedorService.GetAll();
         retornouApi = true;
     }
 

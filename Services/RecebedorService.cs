@@ -1,25 +1,52 @@
 ﻿using ContasFrontEnd.Model;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace ContasFrontEnd.Services
 {
-    public class RecebedorService : BaseService, IEntradaService
+    public class RecebedorService : BaseService, IRecebedorService
     {
-        public Task<HttpResponseMessage> Create(Entrada entrada)
+        private readonly string _urlPath = "api/Recebedores";
+        public async Task<HttpResponseMessage> Create(Recebedor recebedor)
         {
             throw new NotImplementedException();
         }
 
-        public Task<HttpResponseMessage> Delete(int id)
+        public async Task<HttpResponseMessage> Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Entrada>> GetAll()
+        public async Task<List<Recebedor>> GetAll()
         {
-            throw new NotImplementedException();
+            List<Recebedor> recebedores = new List<Recebedor>();
+
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri(BaseURL);
+                api.DefaultRequestHeaders.Accept.Clear();
+                api.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("text/plain"));
+
+                try
+                {
+                    HttpResponseMessage response = await api.GetAsync(_urlPath);
+                    string responseText = response.Content.ReadAsStringAsync().Result;
+                    var conversao = JsonConvert.DeserializeObject<List<Recebedor>>(responseText);
+                    if (conversao != null)
+                        recebedores = conversao;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"ERROR api: {e}");
+                }
+            }
+
+            return recebedores;
+
         }
 
-        public Task<Entrada> GetById(int id)
+        public async Task<Recebedor> GetById(int id)
         {
             throw new NotImplementedException();
         }

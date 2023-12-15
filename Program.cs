@@ -11,6 +11,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 // Registro de serviços
 builder.Services.AddScoped<IEntradaService, EntradaService>();
+builder.Services.AddScoped<IRecebedorService, RecebedorService>();
 builder.Services.AddScoped<IAlertService, AlertService>();
 
 
