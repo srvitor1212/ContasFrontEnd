@@ -7,7 +7,7 @@
 <h1>Recebedores</h1>
 <p>Informe <b>para quem</b> você faz seus <b>pagamentos</b>, exemplo: Boleto Viacredi, Cartão de Crédito, Mãe, João da Empresa etc.</p>
 
-<button class="btn btn-primary">Adicionar</button>
+<button class="btn btn-primary" onclick="@Adicionar">Adicionar</button>
 
 <hr />
 
@@ -57,7 +57,7 @@
         retornouApi = true;
     }
 
-    private void AddEntrada()
+    private void Adicionar()
     {
         nav.NavigateTo("/recebedores/add");
     }

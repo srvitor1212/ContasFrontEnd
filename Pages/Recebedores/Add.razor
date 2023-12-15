@@ -1,0 +1,38 @@
+﻿@page "/recebedores/add"
+@inject NavigationManager nav
+@inject Services.IRecebedorService _recebedorService
+@inject IAlertService AlertService
+
+
+<Form   ButtonText="Salvar"
+        recebedor="@recebedor"
+        loading="@loading"
+        OnValidSubmit="@Criar"></Form>
+
+@code {
+    bool loading = false;
+
+    Recebedor recebedor = new Recebedor();
+
+    async Task Criar()
+    {
+        loading = true;
+        try
+        {
+            HttpResponseMessage response = await _recebedorService.Create(recebedor);
+            if ( ((int)response.StatusCode) == 201)
+            {
+                AlertService.Success("Registro gravado com sucesso", keepAfterRouteChange: true);
+            } else
+            {
+                AlertService.Warn("Não foi possível gravar o registro, tente novamente mais tarde", keepAfterRouteChange: true);
+            }
+            nav.NavigateTo("/recebedores");
+
+        } catch (Exception e)
+        {
+            AlertService.Error("Erro inesperado, verifique o log", keepAfterRouteChange: true);
+            Console.WriteLine($"ERRO: {e}");
+        }
+    }
+}

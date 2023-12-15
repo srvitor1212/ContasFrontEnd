@@ -1,6 +1,7 @@
 ﻿using ContasFrontEnd.Model;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace ContasFrontEnd.Services
 {
@@ -9,7 +10,23 @@ namespace ContasFrontEnd.Services
         private readonly string _urlPath = "api/Recebedores";
         public async Task<HttpResponseMessage> Create(Recebedor recebedor)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = new HttpResponseMessage();
+            using (var api = new HttpClient())
+            {
+                api.BaseAddress = new Uri(BaseURL);
+                api.DefaultRequestHeaders.Accept.Clear();
+                try
+                {
+                    response = await api.PostAsJsonAsync(_urlPath, recebedor);
+                    string responseText = response.Content.ReadAsStringAsync().Result;
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"ERROR api: {e}");
+                }
+            }
+            return response;
         }
 
         public async Task<HttpResponseMessage> Delete(int id)
