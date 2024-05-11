@@ -1,0 +1,64 @@
+﻿@page "/recebedores"
+@inject NavigationManager nav
+@inject Services.IRecebedorService _recebedorService
+
+<PageTitle>Recebedores</PageTitle>
+
+<h1>Recebedores</h1>
+<p>Informe <b>para quem</b> você faz seus <b>pagamentos</b>, exemplo: Boleto Viacredi, Cartão de Crédito, Mãe, João da Empresa etc.</p>
+
+<button class="btn btn-primary" onclick="@Adicionar">Adicionar</button>
+
+<hr />
+
+<p>Meus Recebedores:</p>
+
+@if (recebedores.Count == 0)
+{
+    if (!retornouApi)
+    {
+        <p>Carregando...</p>
+    }
+    else
+    {
+        <p>Não foi possível carregar as informações!</p>
+    }
+} else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome do Recebedor</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in recebedores)
+            {
+                <tr>
+                    <td>@obj.Nome</td>
+                    <td style="white-space: nowrap">
+                        <NavLink href="@($"/recebedores/delete/{obj.Id}")" class="btn btn-link oi oi-trash text-danger mr-1 nounderline"></NavLink>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Recebedor> recebedores = new List<Recebedor>();
+    bool retornouApi = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        recebedores = await _recebedorService.GetAll();
+        retornouApi = true;
+    }
+
+    private void Adicionar()
+    {
+        nav.NavigateTo("/recebedores/add");
+    }
+}
