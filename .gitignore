@@ -265,3 +265,4 @@ __pycache__/
 *.db
 *.pubxml
 /Properties/ServiceDependencies/ContasWeb - Web Deploy/profile.arm.json
+/Shared/icons.razor
