@@ -17,24 +17,20 @@ public class EntradaService : BaseService, IEntradaService
     {
         List<Entrada> entradas = new List<Entrada>();
 
-        using (var api = _httpClient)
-        {
-            api.DefaultRequestHeaders.Accept.Clear();
-            api.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("text/plain"));
+        _httpClient.DefaultRequestHeaders.Accept.Clear();
+        _httpClient.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("text/plain"));
 
-            try
-            {
-                HttpResponseMessage response = await api.GetAsync(_urlPath);
-                string responseText = response.Content.ReadAsStringAsync().Result;
-                var conversao = JsonConvert.DeserializeObject<List<Entrada>>(responseText);
-                if (conversao != null)
-                    entradas = conversao;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"ERROR api: {e}");
-            }
+        try
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(_urlPath);
+            response.EnsureSuccessStatusCode();
+            string responseText = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<Entrada>>(responseText);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"ERROR api: {e}");
         }
 
         return entradas;
@@ -43,19 +39,17 @@ public class EntradaService : BaseService, IEntradaService
     public async Task<HttpResponseMessage> Create(Entrada entrada)
     {
         HttpResponseMessage response = new HttpResponseMessage();
-        using (var api = _httpClient)
-        {
-            api.DefaultRequestHeaders.Accept.Clear();
-            try
-            {
-                response = await api.PostAsJsonAsync(_urlPath, entrada);
-                string responseText = response.Content.ReadAsStringAsync().Result;
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"ERROR api: {e}");
-            }
+        _httpClient.DefaultRequestHeaders.Accept.Clear();
+        try
+        {
+            response = await _httpClient.PostAsJsonAsync(_urlPath, entrada);
+            string responseText = response.Content.ReadAsStringAsync().Result;
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"ERROR api: {e}");
         }
         return response;
     }
@@ -64,24 +58,21 @@ public class EntradaService : BaseService, IEntradaService
     {
         Entrada entrada = new Entrada();
 
-        using (var api = _httpClient)
-        {
-            api.DefaultRequestHeaders.Accept.Clear();
-            api.DefaultRequestHeaders.Accept.Add(
+        _httpClient.DefaultRequestHeaders.Accept.Clear();
+        _httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("text/plain"));
 
-            try
-            {
-                HttpResponseMessage response = await api.GetAsync(_urlPath + "/" + id);
-                string responseText = response.Content.ReadAsStringAsync().Result;
-                var conversao = JsonConvert.DeserializeObject<Entrada>(responseText);
-                if (conversao != null)
-                    entrada = conversao;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"ERROR api: {e}");
-            }
+        try
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(_urlPath + "/" + id);
+            string responseText = response.Content.ReadAsStringAsync().Result;
+            var conversao = JsonConvert.DeserializeObject<Entrada>(responseText);
+            if (conversao != null)
+                entrada = conversao;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"ERROR api: {e}");
         }
 
         return entrada;
@@ -90,20 +81,18 @@ public class EntradaService : BaseService, IEntradaService
     public async Task<HttpResponseMessage> Delete(int id)
     {
         HttpResponseMessage response = new HttpResponseMessage();
-        using (var api = _httpClient)
-        {
-            api.DefaultRequestHeaders.Accept.Clear();
-            api.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("text/plain"));
 
-            try
-            {
-                response = await api.DeleteAsync(_urlPath + "?id=" + id);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"ERROR api: {e}");
-            }
+        _httpClient.DefaultRequestHeaders.Accept.Clear();
+        _httpClient.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("text/plain"));
+
+        try
+        {
+            response = await _httpClient.DeleteAsync(_urlPath + "?id=" + id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"ERROR api: {e}");
         }
 
         return response;

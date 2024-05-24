@@ -16,19 +16,17 @@ public class RecebedorService : BaseService, IRecebedorService
     public async Task<HttpResponseMessage> Create(Recebedor recebedor)
     {
         HttpResponseMessage response = new HttpResponseMessage();
-        using (var api = _httpClient)
-        {
-            api.DefaultRequestHeaders.Accept.Clear();
-            try
-            {
-                response = await api.PostAsJsonAsync(_urlPath, recebedor);
-                string responseText = response.Content.ReadAsStringAsync().Result;
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"ERROR api: {e}");
-            }
+        _httpClient.DefaultRequestHeaders.Accept.Clear();
+        try
+        {
+            response = await _httpClient.PostAsJsonAsync(_urlPath, recebedor);
+            string responseText = response.Content.ReadAsStringAsync().Result;
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"ERROR api: {e}");
         }
         return response;
     }
@@ -36,20 +34,18 @@ public class RecebedorService : BaseService, IRecebedorService
     public async Task<HttpResponseMessage> Delete(int id)
     {
         HttpResponseMessage response = new HttpResponseMessage();
-        using (var api = _httpClient)
-        {
-            api.DefaultRequestHeaders.Accept.Clear();
-            api.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("text/plain"));
 
-            try
-            {
-                response = await api.DeleteAsync(_urlPath + "?id=" + id);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"ERROR api: {e}");
-            }
+        _httpClient.DefaultRequestHeaders.Accept.Clear();
+        _httpClient.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("text/plain"));
+
+        try
+        {
+            response = await _httpClient.DeleteAsync(_urlPath + "?id=" + id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"ERROR api: {e}");
         }
 
         return response;
@@ -59,57 +55,49 @@ public class RecebedorService : BaseService, IRecebedorService
     {
         List<Recebedor> recebedores = new List<Recebedor>();
 
-        using (var api = _httpClient)
-        {
-            api.DefaultRequestHeaders.Accept.Clear();
-            api.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("text/plain"));
 
-            try
-            {
-                HttpResponseMessage response = await api.GetAsync(_urlPath);
-                string responseText = response.Content.ReadAsStringAsync().Result;
-                var conversao = JsonConvert.DeserializeObject<List<Recebedor>>(responseText);
-                if (conversao != null)
-                    recebedores = conversao;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"ERROR api: {e}");
-            }
+        _httpClient.DefaultRequestHeaders.Accept.Clear();
+        _httpClient.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("text/plain"));
+
+        try
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(_urlPath);
+            string responseText = response.Content.ReadAsStringAsync().Result;
+            var conversao = JsonConvert.DeserializeObject<List<Recebedor>>(responseText);
+            if (conversao != null)
+                recebedores = conversao;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"ERROR api: {e}");
         }
 
         return recebedores;
-
     }
 
     public async Task<Recebedor> GetById(int id)
     {
+        Recebedor recebedor = new Recebedor();
+
+        _httpClient.DefaultRequestHeaders.Accept.Clear();
+        _httpClient.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("text/plain"));
+
+        try
         {
-            Recebedor recebedor = new Recebedor();
-
-            using (var api = _httpClient)
-            {
-                api.DefaultRequestHeaders.Accept.Clear();
-                api.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("text/plain"));
-
-                try
-                {
-                    HttpResponseMessage response = await api.GetAsync(_urlPath + "/" + id);
-                    string responseText = response.Content.ReadAsStringAsync().Result;
-                    var conversao = JsonConvert.DeserializeObject<Recebedor>(responseText);
-                    if (conversao != null)
-                        recebedor = conversao;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"ERROR api: {e}");
-                }
-            }
-
-            return recebedor;
+            HttpResponseMessage response = await _httpClient.GetAsync(_urlPath + "/" + id);
+            string responseText = response.Content.ReadAsStringAsync().Result;
+            var conversao = JsonConvert.DeserializeObject<Recebedor>(responseText);
+            if (conversao != null)
+                recebedor = conversao;
         }
+        catch (Exception e)
+        {
+            Console.WriteLine($"ERROR api: {e}");
+        }
+
+        return recebedor;
     }
 
 }
