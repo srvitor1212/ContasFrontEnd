@@ -2,7 +2,6 @@
 {
     public class BaseService
     {
-
         public string BaseURL { 
             get {
                 var ambiente = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
