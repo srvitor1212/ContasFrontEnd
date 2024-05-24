@@ -1,4 +1,5 @@
 using ContasFrontEnd;
+using ContasFrontEnd.Model;
 using ContasFrontEnd.Services;
 using ContasFrontEnd.Shared;
 using Microsoft.AspNetCore.Components.Web;
@@ -15,7 +16,7 @@ if (builder.HostEnvironment.IsProduction())
     builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://contaswebapi.azurewebsites.net/") });
 else
     builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001/") });
-builder.Services.AddScoped<BaseService>();
+builder.Services.AddScoped(typeof(BaseService<>));
 
 
 // Registro de serviços
