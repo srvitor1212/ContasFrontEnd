@@ -1,4 +1,5 @@
 using ContasFrontEnd;
+using ContasFrontEnd.Model;
 using ContasFrontEnd.Services;
 using ContasFrontEnd.Shared;
 using Microsoft.AspNetCore.Components.Web;
@@ -12,6 +13,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 // Registro de serviços
 builder.Services.AddScoped<IEntradaService, EntradaService>();
 builder.Services.AddScoped<IRecebedorService, RecebedorService>();
+builder.Services.AddScoped<IPagamentosService, PagamentosService>();
 builder.Services.AddScoped<IAlertService, AlertService>();
 
 
