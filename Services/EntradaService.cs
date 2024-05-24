@@ -3,107 +3,109 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
-namespace ContasFrontEnd.Services
+namespace ContasFrontEnd.Services;
+
+public class EntradaService : BaseService, IEntradaService
 {
-    public class EntradaService : BaseService, IEntradaService
+    private readonly string _urlPath = "api/Entradas";
+
+    public EntradaService(HttpClient httpClient) : base(httpClient) { }
+
+
+
+    public async Task<List<Entrada>> GetAll()
     {
-        private readonly string _urlPath = "api/Entradas";
-        public async Task<List<Entrada>> GetAll()
+        List<Entrada> entradas = new List<Entrada>();
+
+        using (var api = _httpClient)
         {
-            List<Entrada> entradas = new List<Entrada>();
+            api.DefaultRequestHeaders.Accept.Clear();
+            api.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("text/plain"));
 
-            using (var api = new HttpClient())
+            try
             {
-                api.BaseAddress = new Uri(BaseURL);
-                api.DefaultRequestHeaders.Accept.Clear();
-                api.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("text/plain"));
-
-                try
-                {
-                    HttpResponseMessage response = await api.GetAsync(_urlPath);
-                    string responseText = response.Content.ReadAsStringAsync().Result;
-                    var conversao = JsonConvert.DeserializeObject<List<Entrada>>(responseText);
-                    if (conversao != null)
-                        entradas = conversao;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"ERROR api: {e}");
-                }
+                HttpResponseMessage response = await api.GetAsync(_urlPath);
+                string responseText = response.Content.ReadAsStringAsync().Result;
+                var conversao = JsonConvert.DeserializeObject<List<Entrada>>(responseText);
+                if (conversao != null)
+                    entradas = conversao;
             }
-
-            return entradas;
+            catch (Exception e)
+            {
+                Console.WriteLine($"ERROR api: {e}");
+            }
         }
 
-        public async Task<HttpResponseMessage> Create(Entrada entrada)
-        {
-            HttpResponseMessage response = new HttpResponseMessage();
-            using (var api = new HttpClient())
-            {
-                api.BaseAddress = new Uri(BaseURL);
-                api.DefaultRequestHeaders.Accept.Clear();                
-                try
-                {
-                    response = await api.PostAsJsonAsync(_urlPath, entrada);
-                    string responseText = response.Content.ReadAsStringAsync().Result;
+        return entradas;
+    }
 
-                } catch (Exception e) {
-                    Console.WriteLine($"ERROR api: {e}");
-                }
+    public async Task<HttpResponseMessage> Create(Entrada entrada)
+    {
+        HttpResponseMessage response = new HttpResponseMessage();
+        using (var api = _httpClient)
+        {
+            api.DefaultRequestHeaders.Accept.Clear();
+            try
+            {
+                response = await api.PostAsJsonAsync(_urlPath, entrada);
+                string responseText = response.Content.ReadAsStringAsync().Result;
+
             }
-            return response;
+            catch (Exception e)
+            {
+                Console.WriteLine($"ERROR api: {e}");
+            }
+        }
+        return response;
+    }
+
+    public async Task<Entrada> GetById(int id)
+    {
+        Entrada entrada = new Entrada();
+
+        using (var api = _httpClient)
+        {
+            api.DefaultRequestHeaders.Accept.Clear();
+            api.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("text/plain"));
+
+            try
+            {
+                HttpResponseMessage response = await api.GetAsync(_urlPath + "/" + id);
+                string responseText = response.Content.ReadAsStringAsync().Result;
+                var conversao = JsonConvert.DeserializeObject<Entrada>(responseText);
+                if (conversao != null)
+                    entrada = conversao;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"ERROR api: {e}");
+            }
         }
 
-        public async Task<Entrada> GetById(int id)
+        return entrada;
+    }
+
+    public async Task<HttpResponseMessage> Delete(int id)
+    {
+        HttpResponseMessage response = new HttpResponseMessage();
+        using (var api = _httpClient)
         {
-            Entrada entrada = new Entrada();
+            api.DefaultRequestHeaders.Accept.Clear();
+            api.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("text/plain"));
 
-            using (var api = new HttpClient())
+            try
             {
-                api.BaseAddress = new Uri(BaseURL);
-                api.DefaultRequestHeaders.Accept.Clear();
-                api.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("text/plain"));
-
-                try
-                {
-                    HttpResponseMessage response = await api.GetAsync(_urlPath + "/" + id); 
-                    string responseText = response.Content.ReadAsStringAsync().Result;
-                    var conversao = JsonConvert.DeserializeObject<Entrada>(responseText);
-                    if (conversao != null)
-                        entrada = conversao;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"ERROR api: {e}");
-                }
+                response = await api.DeleteAsync(_urlPath + "?id=" + id);
             }
-
-            return entrada;
+            catch (Exception e)
+            {
+                Console.WriteLine($"ERROR api: {e}");
+            }
         }
 
-        public async Task<HttpResponseMessage> Delete(int id)
-        {
-            HttpResponseMessage response = new HttpResponseMessage();
-            using (var api = new HttpClient())
-            {
-                api.BaseAddress = new Uri(BaseURL);
-                api.DefaultRequestHeaders.Accept.Clear();
-                api.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("text/plain"));
-
-                try
-                {
-                    response = await api.DeleteAsync(_urlPath + "?id=" + id);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"ERROR api: {e}");
-                }
-            }
-
-            return response;
-        }
+        return response;
     }
 }
