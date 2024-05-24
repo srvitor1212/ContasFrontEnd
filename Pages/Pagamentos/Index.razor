@@ -1,0 +1,64 @@
+﻿@page "/pagamentos"
+@inject NavigationManager nav
+@inject Services.IPagamentosService _pagamentos
+
+<PageTitle>Formas de Pagamento</PageTitle>
+
+<h1>Pagamentos</h1>
+<p>Meios de pagamento como pix, transferência, boleto...</p>
+
+<button class="btn btn-primary" @onclick="@Adicionar">Adicionar</button>
+
+<hr />
+
+<p>Minhas Formas de Pagamento:</p>
+
+@if (pagamentos.Count == 0)
+{
+    if (!retornouApi)
+    {
+        <p>Carregando...</p>
+    } else
+    {
+        <p>Não foi possível carregar as informações!</p>
+    }
+} else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pag in pagamentos)
+            {
+                <tr>
+                    <td>@pag.Nome</td>
+                    <td style="white-space: nowrap">
+                        <NavLink href="@($"/pagamentos/delete/{pag.Id}")" class="btn btn-link oi oi-trash text-danger mr-1 nounderline"></NavLink>
+                    </td>                   
+
+                </tr>            
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<Pagamentos> pagamentos = new List<Pagamentos>();
+    bool retornouApi = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        pagamentos = await _pagamentos.GetAll();
+        retornouApi = true;
+    }
+
+    private void Adicionar()
+    {
+        nav.NavigateTo("/pagamentos/add");
+    }
+}

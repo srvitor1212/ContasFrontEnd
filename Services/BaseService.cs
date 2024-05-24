@@ -2,10 +2,16 @@
 {
     public class BaseService
     {
-        public string BaseURL { get; private set; } = "https://contaswebapi.azurewebsites.net/";
-        //public string BaseURL { get; private set; } = "https://localhost:5001/";
 
-        // https://localhost:5001/
-        // https://contaswebapi.azurewebsites.net/
+        public string BaseURL { 
+            get {
+                var ambiente = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                if (ambiente != null && ambiente.Equals("Production", StringComparison.OrdinalIgnoreCase))
+                    return "https://contaswebapi.azurewebsites.net/";
+                else
+                    return "https://localhost:5001/";
+            } 
+            private set { } 
+        }
     }
 }
