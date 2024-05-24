@@ -1,41 +1,40 @@
-﻿
-
-using ContasFrontEnd.Model;
+﻿using ContasFrontEnd.Model;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
-namespace ContasFrontEnd.Services
+namespace ContasFrontEnd.Services;
+
+public class PagamentosService : BaseService, IPagamentosService
 {
-    public class PagamentosService : BaseService, IPagamentosService
+    private readonly string _urlPath = "api/Pagamentos";
+
+    public PagamentosService(HttpClient httpClient) : base(httpClient) { }
+
+
+
+    public async Task<List<Pagamentos>> GetAll()
     {
-        private readonly string _urlPath = "api/Pagamentos";
-        public async Task<List<Pagamentos>> GetAll()
+        List<Pagamentos> pagamentos = new List<Pagamentos>();
+
+        using (var api = _httpClient)
         {
-            List<Pagamentos> pagamentos = new List<Pagamentos>();
+            api.DefaultRequestHeaders.Accept.Clear();
+            api.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("text/plain"));
 
-            using (var api = new HttpClient())
+            try
             {
-                api.BaseAddress = new Uri(BaseURL);
-                api.DefaultRequestHeaders.Accept.Clear();
-                api.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("text/plain"));
-
-                try
-                {
-                    HttpResponseMessage response = await api.GetAsync(_urlPath);
-                    string responseText = response.Content.ReadAsStringAsync().Result;
-                    var conversao = JsonConvert.DeserializeObject<List<Pagamentos>>(responseText);
-                    if (conversao != null)
-                        pagamentos = conversao;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"ERROR api: {e}");
-                }
+                HttpResponseMessage response = await api.GetAsync(_urlPath);
+                string responseText = response.Content.ReadAsStringAsync().Result;
+                var conversao = JsonConvert.DeserializeObject<List<Pagamentos>>(responseText);
+                if (conversao != null)
+                    pagamentos = conversao;
             }
-
-            return pagamentos;
-
+            catch (Exception e)
+            {
+                Console.WriteLine($"ERROR api: {e}");
+            }
         }
+        return pagamentos;
     }
 }
