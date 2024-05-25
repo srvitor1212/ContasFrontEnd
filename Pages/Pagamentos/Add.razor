@@ -1,0 +1,38 @@
+﻿@page "/pagamentos/add"
+@inject NavigationManager nav
+@inject Services.IPagamentosService _pagamentoService
+@inject IAlertService AlertService
+
+
+<Form   ButtonText="Salvar"
+        pagamento="@pagamento"
+        loading="@loading"
+        OnValidSubmit="@Criar"></Form>
+
+@code {
+    bool loading = false;
+
+    Pagamentos pagamento = new Pagamentos();
+
+    async Task Criar()
+    {
+        loading = true;
+        try
+        {
+            HttpResponseMessage response = await _pagamentoService.Create(pagamento);
+            if ( ((int)response.StatusCode) == 201)
+            {
+                AlertService.Success("Registro gravado com sucesso", keepAfterRouteChange: true);
+            } else
+            {
+                AlertService.Warn("Não foi possível gravar o registro, tente novamente mais tarde", keepAfterRouteChange: true);
+            }
+            nav.NavigateTo("/pagamentos");
+
+        } catch (Exception e)
+        {
+            AlertService.Error("Erro inesperado, verifique o log", keepAfterRouteChange: true);
+            Console.WriteLine($"ERRO: {e}");
+        }
+    }
+}

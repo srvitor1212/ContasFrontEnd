@@ -1,15 +1,15 @@
 ﻿@inject NavigationManager nav
 
-<EditForm Model="@recebedor"
+<EditForm Model="@pagamento"
           OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator></DataAnnotationsValidator>
 
     <div>
         <label>Nome :</label>
         <div>
-            <InputText @bind-Value="@recebedor.Nome" class="form-control"
-                       placeholder="João, Maria, Boleto Seguro, Cartão de Crédito..." />
-            <ValidationMessage For="@(() => recebedor.Nome)"></ValidationMessage>
+            <InputText @bind-Value="@pagamento.Nome" class="form-control"
+                       placeholder="Em dinheiro, Pix, TED, boleto..." />
+            <ValidationMessage For="@(() => pagamento.Nome)"></ValidationMessage>
         </div>
     </div>
 
@@ -34,7 +34,7 @@
     [Parameter]
     public string ButtonText { get; set; }
     [Parameter]
-    public Recebedor recebedor { get; set; }
+    public Pagamentos pagamento { get; set; }
     [Parameter]
     public bool loading { get; set; }
     [Parameter]
@@ -42,7 +42,7 @@
 
     private void Voltar()
     {
-        nav.NavigateTo("/recebedores");
+        nav.NavigateTo("/pagamentos");
     }
 
 }

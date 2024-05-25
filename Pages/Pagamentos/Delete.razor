@@ -1,0 +1,73 @@
+﻿@page "/pagamentos/delete/{id}"
+@inject NavigationManager nav
+@inject Services.IPagamentosService _pagamentosService
+@inject IAlertService AlertService
+
+
+<h2>Remover</h2>
+
+<h3>Tem certeza que deseja remover ?</h3>
+
+<table class="table col-md-6">
+    <tbody>
+        <tr>
+            <th scope="row">Nome</th>
+            <td>@pagamento.Nome</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="btn-group">
+    <button onclick="@Remover" disabled="@loading" class="btn btn-danger">
+        @if (loading)
+        {
+            <span class="spinner-border spinner-border-sm mr-1"></span>
+        }
+        &nbsp;Remover
+    </button>
+
+    <button class="btn btn-primary" onclick="@Voltar">Voltar</button>
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    [Parameter]
+    public bool loading { get; set; }
+
+    Pagamentos pagamento = new Pagamentos();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        pagamento = await _pagamentosService.GetById(Convert.ToInt32(Id));
+    }
+
+    private void Voltar()
+    {
+        nav.NavigateTo("/pagamentos");
+    }
+
+    async Task Remover()
+    {
+        loading = true;
+        try
+        {
+            HttpResponseMessage response = await _pagamentosService.Delete(pagamento.Id);
+            if (((int)response.StatusCode) == 200)
+            {
+                AlertService.Success("Registro excluído com sucesso", keepAfterRouteChange: true);
+            }
+            else
+            {
+                AlertService.Warn("Não foi possível excluir o registro, tente novamente mais tarde", keepAfterRouteChange: true);
+            }
+            nav.NavigateTo("/pagamentos");
+
+        }
+        catch (Exception e)
+        {
+            AlertService.Error("Erro inesperado, verifique o log", keepAfterRouteChange: true);
+            Console.WriteLine($"ERRO: {e}");
+        }
+    }
+}
