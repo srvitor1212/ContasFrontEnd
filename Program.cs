@@ -1,6 +1,7 @@
 using ContasFrontEnd;
 using ContasFrontEnd.Model;
 using ContasFrontEnd.Services;
+using ContasFrontEnd.Services.Interface;
 using ContasFrontEnd.Shared;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;

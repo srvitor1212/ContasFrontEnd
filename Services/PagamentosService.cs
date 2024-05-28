@@ -1,4 +1,5 @@
 ﻿using ContasFrontEnd.Model;
+using ContasFrontEnd.Services.Interface;
 
 namespace ContasFrontEnd.Services;
 

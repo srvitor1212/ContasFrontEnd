@@ -1,4 +1,4 @@
-﻿namespace ContasFrontEnd.Services;
+﻿namespace ContasFrontEnd.Services.Interface;
 
 public interface ICommonService<Tipo>
 {
