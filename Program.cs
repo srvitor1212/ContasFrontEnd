@@ -1,5 +1,4 @@
 using ContasFrontEnd;
-using ContasFrontEnd.Model;
 using ContasFrontEnd.Services;
 using ContasFrontEnd.Services.Interface;
 using ContasFrontEnd.Shared;
@@ -24,6 +23,7 @@ builder.Services.AddScoped(typeof(BaseService<>));
 builder.Services.AddScoped<IEntradaService, EntradaService>();
 builder.Services.AddScoped<IRecebedorService, RecebedorService>();
 builder.Services.AddScoped<IPagamentosService, PagamentosService>();
+builder.Services.AddScoped<IDividasService, DividasService>();
 builder.Services.AddScoped<IAlertService, AlertService>();
 
 

@@ -1,0 +1,42 @@
+﻿@page "/dividas/add"
+@inject NavigationManager nav
+@inject Services.Interface.IDividasService _dividasService
+@inject IAlertService AlertService
+
+
+<Form   ButtonText="Salvar"
+        dividas="@dividas"
+        loading="@loading"
+        OnValidSubmit="@CriarEntrada"></Form>
+
+@code {
+    bool loading = false;
+
+    Dividas dividas = new Dividas();
+
+    protected override void OnInitialized()
+    {
+    }
+
+    async Task CriarEntrada()
+    {
+        loading = true;
+        try
+        {
+            var response = await _dividasService.Create(dividas);
+            if ( ((int)response.StatusCode) == 201)
+            {
+                AlertService.Success("Registro gravado com sucesso", keepAfterRouteChange: true);
+            } else
+            {
+                AlertService.Warn("Não foi possível gravar o registro, tente novamente mais tarde", keepAfterRouteChange: true);
+            }
+            nav.NavigateTo("/dividas");
+
+        } catch (Exception e)
+        {
+            AlertService.Error("Erro inesperado, verifique o log", keepAfterRouteChange: true);
+            Console.WriteLine($"ERRO: {e}");
+        }
+    }
+}

@@ -1,0 +1,62 @@
+﻿@page "/dividas"
+@inject NavigationManager nav
+@inject Services.Interface.IDividasService _dividasService
+
+<button class="btn btn-primary" @onclick="@Adicionar">Adicionar</button>
+
+<hr />
+
+@if (dividas.Count == 0)
+{
+    if (!retornouApi)
+    {
+        <p>Carregando...</p>
+    }
+    else
+    {
+        <p>Não foi possível carregar as informações!</p>
+    }
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Valor</th>
+                <th>Recebo até</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ent in dividas)
+            {
+                <tr>
+                    <td>@ent.Nome</td>
+                    <td>@ent.Valor</td>
+                    <td style="white-space: nowrap">
+                        <NavLink href="@($"/dividas/delete/{ent.Id}")" class="btn btn-link oi oi-trash text-danger mr-1 nounderline"></NavLink>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<Dividas> dividas = new List<Dividas>();
+    bool retornouApi = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        dividas = await _dividasService.GetAll();
+        retornouApi = true;
+    }
+
+    private void Adicionar()
+    {
+        nav.NavigateTo("/dividas/add");
+    }
+}

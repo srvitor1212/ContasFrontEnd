@@ -1,0 +1,48 @@
+﻿@inject NavigationManager nav
+
+<EditForm Model="@dividas"
+          OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+    <div>
+        <label>Nome :</label>
+        <div>
+            <InputText @bind-Value="@dividas.Nome" class="form-control"
+                placeholder="Conta de Luz, Internet, Moto João" />
+            <ValidationMessage For="@(() => dividas.Nome)"></ValidationMessage>
+        </div>
+    </div>
+
+    <div>&nbsp;</div>
+    <ValidationSummary></ValidationSummary>
+
+    <div class="btn-group">
+        <button disabled="@loading" class="btn btn-success">
+            @if (loading)
+            {
+                <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            &nbsp;@ButtonText
+        </button>
+
+        <button class="btn btn-primary" onclick="@Voltar">Voltar</button>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public string ButtonText { get; set; }
+    [Parameter]
+    public Dividas dividas { get; set; }
+    [Parameter]
+    public bool loading { get; set; }
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    private void Voltar()
+    {
+        nav.NavigateTo("/dividas");
+    }
+
+}
