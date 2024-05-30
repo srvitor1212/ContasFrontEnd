@@ -1,0 +1,59 @@
+﻿@using ContasFrontEnd.Services.Interface
+@inject IAlertService AlertService
+@inject NavigationManager nav
+@typeparam TService
+@typeparam TModel
+
+<h3>Adicionar @textTopo</h3>
+<hr />
+<label>@textDescricao</label>
+
+<EditForm 
+    Model="@Model"
+          OnValidSubmit="@CriarModel">
+    
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    @ChildContent
+
+    <div class="btn-group">
+        <button disabled="@loading" class="btn btn-success">
+            @if (loading)
+            {
+                <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            &nbsp;Salvar
+        </button>
+
+        <button class="btn btn-primary" onclick="@Voltar">Voltar</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public TService? Service { get; set; }
+    public RenderFragment<TService>? serviceGeneric { get; set; }
+    [Parameter]
+    public TModel? Model { get; set; }
+
+
+    [Parameter]
+    public string? textTopo { get; set; }
+    [Parameter]
+    public string? textDescricao { get; set; }
+
+
+    bool loading = false;
+
+
+    async Task CriarModel()
+    {
+        AlertService.Warn("Criar model");
+    }
+    private void Voltar()
+    {
+        nav.NavigateTo("/");
+    }
+}
